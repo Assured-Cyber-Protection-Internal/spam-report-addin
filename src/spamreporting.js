@@ -18,7 +18,6 @@ Office.onReady(() => {
   function onSpamReport(event) {
     console.log("onSpamReport");
     alert("onSpamReport");
-    return;
     // Get the Base64-encoded EML format of a reported message.
     Office.context.mailbox.item.getAsFileAsync(
       { asyncContext: event },
@@ -59,28 +58,28 @@ Office.onReady(() => {
         //     receivedDate: Office.context.mailbox.item.dateTimeCreated
         //   })
         // })
-//https://vczw8bvg-5000.uks1.devtunnels.ms/
-        console.log("Fetching");
-        fetch('https://vczw8bvg-5000.uks1.devtunnels.ms/api/interceptions/report', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: Office.context.mailbox.item.from.emailAddress,
-            to: Office.context.mailbox.item.to[0].emailAddress,
-            body: "Fetch " + Office.context.mailbox.item.body.getAsync(),
-            subject: Office.context.mailbox.item.subject,
-            receivedDate: Office.context.mailbox.item.dateTimeCreated
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Success:', data);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+// //https://vczw8bvg-5000.uks1.devtunnels.ms/
+//         console.log("Fetching");
+//         fetch('https://vczw8bvg-5000.uks1.devtunnels.ms/api/interceptions/report', {
+//           method: 'POST',
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//           body: JSON.stringify({
+//             from: Office.context.mailbox.item.from.emailAddress,
+//             to: Office.context.mailbox.item.to[0].emailAddress,
+//             body: "Fetch " + Office.context.mailbox.item.body.getAsync(),
+//             subject: Office.context.mailbox.item.subject,
+//             receivedDate: Office.context.mailbox.item.dateTimeCreated
+//           })
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//           console.log('Success:', data);
+//         })
+//         .catch((error) => {
+//           console.error('Error:', error);
+//         });
 
 
 
