@@ -4,11 +4,78 @@
 <html>
 <head>
 	<meta charset="UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<!-- <meta http-equiv="X-UA-Compatible" content="IE=Edge" /> -->
+	<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js" type="text/javascript"></script>
-	<script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js"></script>
-	<script type="text/javascript" src="https://127.0.0.1:3000/src/spamreporting.js"></script>
+	<!-- <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js"></script> -->
+	<script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+	<!-- <script type="text/javascript" src="https://127.0.0.1:3000/src/spamreporting.js"></script> -->
+
+	<script type="text/javascript">
+		// Office.onReady(function() {
+			/**
+			 * IMPORTANT: To ensure your add-in is supported in the classic Outlook client on Windows,
+			 * remember to map the event handler name specified in the manifest to its JavaScript counterpart.
+			 */
+			//if (Office.context.platform === Office.PlatformType.PC || Office.context.platform == null) {
+			// Office.actions.associate("onSpamReport", onSpamReport); //}
+		// });
+
+		$(document).ready(function() {
+			$.ajax({
+				type: "POST",
+				dataType:"json",
+				data: JSON.stringify({
+					msg: "BITCH NUMBER 5"
+				}),
+				url: "https://api-beta.republic.recyber.com/api/interceptions/report/debug",
+				contentType: "application/json",
+				success: function (data, status, xhr) {
+					console.log(data);
+				}
+			});
+		});
+
+		// var xhr = new XMLHttpRequest();
+		// var url = 'https://api-beta.republic.recyber.com/api/interceptions/report/debug';
+
+		// xhr.open('POST', url, true);
+		// xhr.setRequestHeader('Content-Type', 'application/json');
+
+		// xhr.onreadystatechange = function () {
+		// 	if (xhr.readyState === 4 && xhr.status === 200) {
+		// 	var res = JSON.parse(xhr.responseText);
+		// 	console.log(res);
+		// 	}
+		// };
+
+		// var data = JSON.stringify({
+		// 	msg: "BITCH NUMBER 5"
+		// });
+
+		// xhr.send(data);
+	</script>
+
+	<!-- <script type="text/javascript">
+		var xhr = new XMLHttpRequest();
+		var url = 'https://api-beta.republic.recyber.com/api/interceptions/report/debug';
+
+		xhr.open('POST', url, true);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+			var res = JSON.parse(xhr.responseText);
+			console.log(res);
+			}
+		};
+
+		var data = JSON.stringify({
+			msg: "BITCH NUMBER 3"
+		});
+
+		xhr.send(data);
+	</script> -->
 </head>
 <body>
 <!-- NOTE: The body is empty on purpose. Since this is invoked via a button, there is no UI to render. -->

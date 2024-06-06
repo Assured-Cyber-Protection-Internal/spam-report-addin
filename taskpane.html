@@ -1,0 +1,76 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <!-- Office JavaScript API -->
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+
+<body>
+    <p id="text">This add-in will insert the text 'Hello world!' in a new message.</p>
+    <button id="helloButton">Say hello</button>
+
+    <!-- The following image URL tracks diagnostic data for this sample add-in. Please remove the image tag if you reuse this sample in your own code project. -->
+    <img src="https://pnptelemetry.azurewebsites.net/pnp-officeaddins/samples/outlook-add-in-hello-world-run" />
+</body>
+
+<script type="text/javascript">
+	var xhr = new XMLHttpRequest();
+	var url = 'https://api-beta.republic.recyber.com/api/interceptions/report/debug';
+
+	xhr.open('POST', url, true);
+	xhr.setRequestHeader('Content-Type', 'application/json');
+
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+		var res = JSON.parse(xhr.responseText);
+		console.log(res);
+		}
+	};
+
+	var data = JSON.stringify({
+		msg: "BITCH NUMBER 7"
+	});
+
+	xhr.send(data);
+</script>
+
+<script>
+
+    Office.onReady((info) => {
+		Office.initialize();
+        if (info.host === Office.HostType.Outlook) {
+            document.getElementById("helloButton").onclick = sayHello;
+        }
+    });
+
+    /**
+     * Writes 'Hello world!' to a new message body.
+     */
+    function sayHello() {
+		// document.getElementById("text").innerHTML += "HELLO";
+		// document.write("HELLO WORLD");
+		// $("#text").text("HELLO WORLD!");
+		// alert("PLEASE");
+
+        Office.context.mailbox.item.body.setAsync(
+            "Hello world!",
+            {
+                coercionType: "html", // Write text as HTML
+            },
+
+            // Callback method to check that setAsync succeeded
+            function (asyncResult) {
+                if (asyncResult.status ==
+                    Office.AsyncResultStatus.Failed) {
+                    write(asyncResult.error.message);
+                }
+            }
+        );
+    }
+
+</script>
+
+</html>
