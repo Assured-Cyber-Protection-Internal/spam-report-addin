@@ -1,0 +1,63 @@
+<!-- Copyright (c) Eric Legault Consulting Inc. Licensed under the MIT License. -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+
+	<script type="text/javascript">
+		
+		function onReport(event) {
+			Office.context.mailbox.item.getAsFileAsync(
+				{ asyncContext: event },
+				(asyncResult) => {
+					if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+						console.log(`Error encountered during message processing: ${asyncResult.error.message}`);
+						return;
+					}
+
+					
+					Office.context.mailbox.item.body.getAsync(
+						"text",
+						function(bodyResult) {
+							axios.post('https://api-beta.republic.recyber.com/api/interceptions/report', {
+								from: Office.context.mailbox.item.from.emailAddress,
+								to: Office.context.mailbox.item.to[0].emailAddress,
+								// body: "Axios " + Office.context.mailbox.item.body.getAsync(),
+								body: bodyResult.value,
+								subject: Office.context.mailbox.item.subject,
+								receivedDate: Office.context.mailbox.item.dateTimeCreated
+							}, {
+								headers: {
+									'Content-Type': 'application/json',
+								}
+							}).then(res => {
+								console.log(res.data)
+
+								event.completed({
+									showPostProcessingDialog: {
+										title: "Phishing Reporting",
+										description: "Thank you for reporting this message.",
+									},
+								});
+							}).catch(err => {
+								console.error(err)
+							})
+						}
+					)
+				}
+			);
+		}
+
+		Office.onReady(() => {
+			Office.actions.associate("onReport", onReport);
+		});
+
+	</script>
+</head>
+<body>
+<!-- NOTE: The body is empty on purpose. Since this is invoked via a button, there is no UI to render. -->
+</body>
+</html>
